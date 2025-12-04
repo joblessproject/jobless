@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.0">
+    <link rel="apple-touch-icon" type="image/png" href="logo.jpg">
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+    <link rel="mask-icon" type="image/x-icon" href="logo.jpg" color="#111">
+    <title data-en="JobIess - $JobIess" data-zh="JobIess - $JobIess">JobIess - $JobIess</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FFD700; /* Gold Yellow */
+            --primary-dark: #DAA520;
+            --secondary: #000000; /* Black */
+            --accent: #FFFF00; /* Bright Yellow */
+            --dark-bg: #000000;
+            --darker-bg: rgba(255, 215, 0, 0.1);
+            --text-primary: #FFFFFF;
+            --text-secondary: #FFD700;
+            --navbar-bg: rgba(0, 0, 0, 0.7);
+            --glass-effect: blur(12px);
+            --transition-normal: all 0.3s ease;
+            --border-glow: rgba(255, 215, 0, 0.3);
+            --neon-shadow: 0 0 15px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3);
+            --glow-yellow: 0 0 15px rgba(255, 215, 0, 0.5);
+            --glow-dark-yellow: 0 0 15px rgba(218, 165, 32, 0.5);
+            --glow-bright-yellow: 0 0 15px rgba(255, 255, 0, 0.5);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--darker-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, var(--primary-dark), var(--accent));
+        }
+        /* Navigation Bar Styles */
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--navbar-bg);
+            backdrop-filter: var(--glass-effect);
+            border-bottom: 1px solid var(--border-glow);
+            z-index: 1000;
+            transition: var(--transition-normal);
+            height: 70px;
+        }
+        #navbar.scrolled {
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            transition: width 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+        .nav-link:hover {
+            color: var(--secondary);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+        }
+        /* Mobile Navigation */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        #mobile-menu.open {
+            max-height: 300px;
+        }
+        #mobile-menu-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        #mobile-menu-button.active #line1 {
+            transform: translate(-50%, -50%) rotate(45deg);
+            transform-origin: center;
+        }
+        #mobile-menu-button.active #line2 {
+            opacity: 0;
+        }
+        #mobile-menu-button.active #line3 {
+            transform: translate(-50%, -50%) rotate(-45deg);
+            transform-origin: center;
+        }
+        #line1, #line2, #line3 {
+            transition: transform 0.3s ease, opacity 0.2s ease, background-color 0.3s ease;
+            transform-origin: center;
+        }
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        .float-image {
+            animation: float 3s ease-in-out infinite;
+        }
+        /* Neon Effect Animation */
+        @keyframes neon-glow {
+            0% { box-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700; }
+            50% { box-shadow: 0 0 15px #FFFF00, 0 0 30px #FFFF00; }
+            100% { box-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700; }
+        }
+        .neon-image {
+            animation: neon-glow 2s ease-in-out infinite;
+        }
+        /* Section Styles */
+        section {
+            padding: 4rem 0; /* Reduced padding */
+            min-height: auto; /* Changed from 100vh to auto to make sections closer */
+            display: flex;
+            align-items: center;
+        }
+        main section:first-of-type {
+            padding-top: 10rem; /* Adjusted padding to account for fixed notification bars */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: black;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: var(--transition-normal);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--neon-shadow);
+        }
+        .card {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: var(--glass-effect);
+            border: 1px solid var(--border-glow);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: var(--transition-normal);
+            text-align: center;
+        }
+        .card * {
+            color: white !important;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--neon-shadow);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+        .title-container {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: var(--glass-effect);
+            border: 1px solid var(--border-glow);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: var(--transition-smooth);
+        }
+        .title-container:hover {
+            transform: scale(1.02);
+            box-shadow: var(--glow-bright-yellow);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        .section-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .section-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (max-width: 767px) {
+            .desktop-only { display: none; }
+            section { padding: 4rem 0; }
+            main section:first-of-type { padding-top: 12rem; }
+            .container { padding: 0 1rem; }
+            #navbar { height: auto; }
+            .nav-link::after { display: none; }
+        }
+        @media (min-width: 768px) {
+            .mobile-only { display: none; }
+        }
+        /* Language Switcher Sidebar */
+        .language-switcher {
+            position: relative;
+        }
+        .language-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: var(--primary-dark);
+            border-radius: 50%;
+            color: black;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .language-btn:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            transform: scale(1.1);
+        }
+        .language-btn img {
+            width: 24px;
+            height: 24px;
+        }
+        .language-menu {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--dark-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            z-index: 1000;
+            margin-left: 1rem;
+            white-space: nowrap;
+        }
+        .language-menu.show {
+            display: block;
+        }
+        .language-menu button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .language-menu button:hover {
+            background: var(--primary);
+            border-radius: 0.25rem;
+        }
+        .language-menu button img {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+        }
+        /* Running Gallery Styles */
+        .running-gallery {
+            overflow: hidden;
+            width: 100%;
+            background-color: var(--dark-bg);
+            padding: 1rem 0;
+            position: relative;
+            z-index: 10;
+        }
+        .gallery-track {
+            display: flex;
+            animation: scroll 20s linear infinite;
+            width: max-content;
+        }
+        .gallery-track img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            margin-right: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--neon-shadow);
+        }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        /* Fixed Top Bars Container */
+        .fixed-top-bars {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background-color: var(--navbar-bg);
+            backdrop-filter: var(--glass-effect);
+            border-bottom: 1px solid var(--border-glow);
+            padding-top: 0.2rem;
+            padding-bottom: 0.2rem; /* Adjusted for better spacing */
+        }
+        /* Running Text Styles */
+        .running-text {
+            overflow: hidden;
+            width: 100%;
+            padding: 0.3rem 0; /* Adjusted padding */
+            margin: 0; /* Ensure no extra margin */
+            display: flex;
+            align-items: center; /* Center vertically */
+            height: 100%;
+        }
+        .text-track {
+            display: flex;
+            animation: text-scroll 15s linear infinite;
+            width: max-content;
+        }
+        .text-track p {
+            white-space: nowrap;
+            margin-right: 2rem;
+            font-size: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        @keyframes text-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        /* Hero Text Container */
+        .hero-container {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: var(--glass-effect);
+            border: 1px solid var(--border-glow);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+        }
+        /* Popup Styles */
+        #warning-popup, #connect-wallet-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-glow);
+            box-shadow: var(--neon-shadow);
+            text-align: center;
+            z-index: 9999;
+            max-width: 90%;
+            width: 600px;
+        }
+        #warning-popup img, #connect-wallet-popup img {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 1.5rem auto;
+            display: block;
+        }
+        #warning-popup p, #connect-wallet-popup p {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            line-height: 1.6;
+        }
+        /* Contract Running Text */
+        .contract-running {
+            overflow: hidden;
+            width: 100%;
+            padding: 0.5rem 0;
+            position: relative;
+            z-index: 10;
+            margin-top: -10px;
+            display: flex;
+            align-items: center; /* Center vertically */
+            height: 100%;
+        }
+        .contract-track {
+            display: flex;
+            animation: contract-scroll 10s linear infinite;
+            width: max-content;
+        }
+        .contract-track p {
+            white-space: nowrap;
+            margin-right: 2rem;
+            font-size: 1rem;
+            background: linear-gradient(to right, #FFD700, #FFFF00, #DAA520);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        @keyframes contract-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        /* Binance Logo Background Styles */
+        .binance-logo-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.7; /* Reduced brightness by 30% */
+            transition: transform 0.1s linear; /* Smooth mouse-following */
+        }
+        /* Wallet Dropdown */
+        .wallet-dropdown {
+            position: relative;
+        }
+        .wallet-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--dark-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            z-index: 1000;
+        }
+        .wallet-menu.show {
+            display: block;
+        }
+        .wallet-menu button {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            text-align: left;
+            cursor: pointer;
+        }
+        .wallet-menu button:hover {
+            background: var(--primary);
+            border-radius: 0.25rem;
+        }
+        /* Notification Styles */
+        .text-yellow { color: #FFD700 !important; }
+        .text-dark-yellow { color: #DAA520 !important; }
+        .text-bright-yellow { color: #FFFF00 !important; }
+        /* Gallery Styles */
+        .imageGallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            justify-items: center;
+        }
+        .imageGallery button {
+            width: 100%;
+            height: 250px;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .imageGallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .imageGallery button:hover img {
+            transform: scale(1.05);
+        }
+        /* Dialog (Fullscreen Gallery) Styles */
+        .dialog {
+            border: none;
+            background: rgba(0,0,0,0.8);
+            width: 100%;
+            height: 100%;
+            max-width: 100vw;
+            max-height: 100vh;
+            padding: 0;
+            overscroll-behavior: contain;
+        }
+        .dialog::backdrop {
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+        .dialog-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            width: 100%;
+            height: 100%;
+        }
+        .carousel picture {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .dialog .close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        /* Wallet Connection Notification Bar */
+        #wallet-connect-notif-bar {
+            padding: 0.4rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            height: 30px; /* Fixed height */
+            position: relative;
+            overflow: hidden;
+        }
+        .toast-notif {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            opacity: 0;
+            transform: translateY(100%);
+            animation: slideInFadeOut 4s ease-in-out;
+        }
+        @keyframes slideInFadeOut {
+            0% { opacity: 0; transform: translateY(100%); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100%); }
+        }
+        /* Presale/Private Sale Locked Styles */
+        .sale-container {
+            position: relative;
+        }
+        .locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.75rem;
+            z-index: 10;
+            cursor: not-allowed;
+        }
+        .locked-overlay .fa-lock {
+            font-size: 4rem;
+            color: var(--text-secondary);
+        }
+        .locked-overlay span {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+        .progress-bar-bg {
+            background: var(--dark-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            height: 10px;
+            margin: 0.5rem 0;
+        }
+        .progress-bar-fill {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            height: 10px;
+            width: 0%; /* Start at 0% */
+            border-radius: 10px;
+        }
+        .sale-details {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin: 1rem 0;
+        }
+        .sale-details li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .sale-details span:first-child {
+            color: var(--text-secondary);
+        }
+        /* NEW LIVE FEED BAR STYLES */
+        #live-feed-bar {
+            padding: 0.75rem 0;
+            animation: neon-pulse 4s ease-in-out infinite;
+            position: relative;
+            z-index: 999;
+        }
+        @keyframes neon-pulse {
+            0%, 100% {
+                box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.5), 0 0 15px rgba(255, 215, 0, 0.5);
+            }
+            50% {
+                box-shadow: inset 0 0 25px rgba(255, 255, 0, 0.7), 0 0 25px rgba(255, 255, 0, 0.7);
+            }
+        }
+        .live-feed-column {
+            text-align: left;
+            overflow: hidden;
+        }
+        .feed-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+            text-align: center;
+        }
+        .notification-content-area {
+            min-height: 20px;
+            position: relative;
+        }
+        .notif-item {
+            opacity: 0;
+            animation-fill-mode: forwards;
+            font-weight: 500;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        }
+        /* Dex Screener Chart Styles */
+        #dexscreener-embed{position:relative;width:100%;padding-bottom:125%;}
+        @media(min-width:1400px){#dexscreener-embed{padding-bottom:65%;}}
+        #dexscreener-embed iframe{position:absolute;width:100%;height:100%;top:0;left:0;border:0;}
+        /* Styling for the button container */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 1rem;
+            margin-top: -10px;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .contract-container {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: var(--glass-effect);
+            border: 1px solid var(--border-glow);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .contract-container:hover {
+            box-shadow: var(--glow-bright-yellow);
+        }
+        .contract-container p {
+            margin: 0;
+            font-size: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-['Roboto_Mono'] overflow-x-hidden">
+    <canvas class="binance-logo-bg" width="1365" height="713"></canvas>
+    <div id="warning-popup">
+        <img src="logo.jpg" alt="JobIess Logo">
+        <p data-en="Caught you trying to snoop around our code, huh? JobIess doesn't play nice with backstage lurkers—stay in the audience!" data-zh="抓到你偷看我们的代码了？JobIess不欢迎后台窥探者——请待在观众席！">Caught you trying to snoop around our code, huh? JobIess doesn't play nice with backstage lurkers—stay in the audience!</p>
+    </div>
+    <div id="connect-wallet-popup">
+        <img src="logo.jpg" alt="JobIess Logo">
+        <p data-en="Whoa there speedy You need to connect your wallet before you can play with the big toys Go on click that connect button We will wait." data-zh="哇，慢点！你需要先连接你的钱包才能玩大玩具。来吧，点击那个连接按钮，我们会等你的。">Whoa there speedy You need to connect your wallet before you can play with the big toys Go on click that connect button We will wait.</p>
+    </div>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-20 left-10 w-96 h-96 bg-yellow-900/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-80 h-80 bg-black-900/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-40 right-20 w-64 h-64 bg-yellow-900/10 rounded-full blur-3xl"></div>
+    </div>
+    <nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-yellow-500/30 z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="logo.jpg" alt="JobIess Logo" class="h-10 w-auto">
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="#home" class="nav-link text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md transition-colors duration-200" data-en="Home" data-zh="主页">Home</a>
+                    <a href="#lore" class="nav-link text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md transition-colors duration-200" data-en="Lore" data-zh="传说">Lore</a>
+                    <a href="#about" class="nav-link text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md transition-colors duration-200" data-en="About" data-zh="关于">About</a>
+                    <a href="#roadmap" class="nav-link text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md transition-colors duration-200" data-en="Roadmap" data-zh="路线图">Roadmap</a>
+                    <a href="#gallery" class="nav-link text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md transition-colors duration-200" data-en="Gallery" data-zh="图库">Gallery</a>
+                    <a href="#tokenomics" class="nav-link text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md transition-colors duration-200" data-en="Tokenomics" data-zh="代币经济学">Tokenomics</a>
+                    <a href="#faq" class="nav-link text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md transition-colors duration-200" data-en="FAQ" data-zh="常见问题">FAQ</a>
+                    <a href="#admin-warning" class="nav-link text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md transition-colors duration-200" data-en="Warning" data-zh="警告">Warning</a>
+                </div>
+                <div class="flex md:hidden">
+                    <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+                        <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+                            <span class="block h-0.5 w-5 bg-yellow-400 mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+                            <span class="block h-0.5 w-5 bg-yellow-400 mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+                            <span class="block h-0.5 w-5 bg-yellow-400 transform transition duration-300 ease-in-out" id="line3"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                <div class="pt-2 pb-4 space-y-1">
+                    <a href="#home" class="mobile-nav-link block text-gray-300 hover:text-yellow-400 hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200" data-en="Home" data-zh="主页">Home</a>
+                    <a href="#lore" class="mobile-nav-link block text-gray-300 hover:text-yellow-400 hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200" data-en="Lore" data-zh="传说">Lore</a>
+                    <a href="#about" class="mobile-nav-link block text-gray-300 hover:text-yellow-400 hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200" data-en="About" data-zh="关于">About</a>
+                    <a href="#roadmap" class="mobile-nav-link block text-gray-300 hover:text-yellow-400 hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200" data-en="Roadmap" data-zh="路线图">Roadmap</a>
+                    <a href="#gallery" class="mobile-nav-link block text-gray-300 hover:text-yellow-400 hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200" data-en="Gallery" data-zh="图库">Gallery</a>
+                    <a href="#tokenomics" class="mobile-nav-link block text-gray-300 hover:text-yellow-400 hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200" data-en="Tokenomics" data-zh="代币经济学">Tokenomics</a>
+                    <a href="#faq" class="mobile-nav-link block text-gray-300 hover:text-yellow-400 hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200" data-en="FAQ" data-zh="常见问题">FAQ</a>
+                    <a href="#admin-warning" class="mobile-nav-link block text-gray-300 hover:text-yellow-400 hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200" data-en="Warning" data-zh="警告">Warning</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+   
+    <div class="fixed-top-bars">
+        <div class="running-text flex items-center h-full">
+            <div class="text-track">
+                <p data-en="CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444 - Join JobIess ($JobIess) - The Meme Coin for Initiative on BNB Smart Chain!" data-zh="合约地址 $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444 - 加入 JobIess ($JobIess) - BNB 智能链上的主动精神迷因币！">CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444 - Join JobIess ($JobIess) - The Meme Coin for Initiative on BNB Smart Chain!</p>
+                <p data-en="CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444 - Join JobIess ($JobIess) - The Meme Coin for Initiative on BNB Smart Chain!" data-zh="合约地址 $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444 - 加入 JobIess ($JobIess) - BNB 智能链上的主动精神迷因币！">CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444 - Join JobIess ($JobIess) - The Meme Coin for Initiative on BNB Smart Chain!</p>
+            </div>
+        </div>
+        <div id="wallet-connect-notif-bar"></div>
+    </div>
+    <div class="contract-running flex items-center h-full">
+        <div class="contract-track">
+            <p data-en="CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444" data-zh="合约地址 $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444">CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444</p>
+            <p data-en="CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444" data-zh="合约地址 $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444">CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444</p>
+        </div>
+    </div>
+    <main>
+        <section id="home" class="min-h-screen flex items-center justify-center relative pt-20 section-hidden section-visible">
+            <div class="container mx-auto px-6 py-20">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                    <div class="relative flex-1">
+                        <div class="absolute inset-0 bg-gradient-to-r from-yellow-500/20 to-black-500/20 rounded-xl blur-sm"></div>
+                        <img src="logo.jpg?text=JobIess" alt="JobIess" class="float-image w-full h-auto rounded-xl shadow-xl">
+                    </div>
+                    <div class="hero-container flex-1">
+                        <div class="relative mb-4">
+                            <div class="absolute inset-0 bg-yellow-500/20 rounded-full blur-3xl"></div>
+                            <div class="text-6xl md:text-8xl font-bold gradient-text pb-2 relative animate-fadeIn text-center" data-en="WELCOME TO JobIess - $JobIess" data-zh="欢迎来到 JobIess - $JobIess">WELCOME TO JobIess - $JobIess</div>
+                        </div>
+                        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mb-8" data-en="JobIess, but taking the initiative. - CTO" data-zh="失业，但仍保有主动精神。 - CTO">JobIess, but taking the initiative. - CTO</p>
+                        <p class="text-lg text-gray-400 max-w-3xl mb-8" data-en="JobIess is a meme coin born from the spirit of initiative on BNB Smart Chain. With a fair launch, we are building a strong community for decentralized financial innovation. Join us and experience true initiative!" data-zh="JobIess is a meme coin born from the spirit of initiative on BNB Smart Chain. With a fair launch, we are building a strong community for decentralized financial innovation. Join us and experience true initiative!"></p>
+                        <div class="button-container">
+                            <div class="button-row">
+                                <a href="https://bscscan.com/token/0xA524B11473b7Ce7EB1dc883A585e64471A734444" target="_blank" class="btn-primary relative z-10 flex items-center justify-center gap-2" data-en="Bsc Scan" data-zh="Bsc Scan">Bsc Scan</a>
+                                <a href="https://coinmarketcap.com/currencies/jobiess/" target="_blank" class="btn-primary relative z-10 flex items-center justify-center gap-2" data-en="Coinmarketcap" data-zh="Coinmarketcap">Coinmarketcap</a>
+                                <a href="https://www.coingecko.com/en/coins/jobiess" target="_blank" class="btn-primary relative z-10 flex items-center justify-center gap-2" data-en="Coingecko" data-zh="Coingecko">Coingecko</a>
+                                <a href="https://x.com/jobiess_bsc_?s=21&t=x2bmBSoMGpLSbkOgUriIgQ" target="_blank" class="btn-primary relative z-10 flex items-center justify-center gap-2" data-en="Twitter" data-zh="推特">Twitter</a>
+                                <a href="https://www.dextools.io/app/en/bnb/pair-explorer/0x1f6b2a35f1ca3ab808ef0c50f055ce5e24ea9801?t=1757563498815" target="_blank" class="btn-primary relative z-10 flex items-center justify-center gap-2" data-en="Dextools" data-zh="Dextools">Dextools</a>
+                                <a href="https://four.meme/token/0xa524b11473b7ce7eb1dc883a585e64471a734444" target="_blank" class="btn-primary relative z-10 flex items-center justify-center gap-2" data-en="4Meme" data-zh="4Meme">4Meme</a>
+                            </div>
+                            <div class="button-row">
+                                <a href="https://dexscreener.com/bsc/0x1f6b2a35f1ca3ab808ef0c50f055ce5e24ea9801" target="_blank" class="btn-primary relative z-10 flex items-center justify-center gap-2" data-en="Dexscreener" data-zh="Dexscreener">Dexscreener</a>
+                                <a href="https://m.ave.ai/token/0xa524b11473b7ce7eb1dc883a585e64471a734444-bsc" target="_blank" class="btn-primary relative z-10 flex items-center justify-center gap-2" data-en="Ave AI" data-zh="Ave AI">Ave AI</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="button-container">
+            <div class="button-row">
+                <a href="https://t.me/joblesss2" target="_blank" class="btn-primary flex items-center justify-center" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+                <a href="https://x.com/jobiess_bsc_?s=21&t=x2bmBSoMGpLSbkOgUriIgQ" target="_blank" class="btn-primary flex items-center justify-center" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                <button class="btn-primary flex items-center justify-center" onclick="setLanguage('en')" title="English"><i class="fa-solid fa-flag-usa"></i></button>
+                <button class="btn-primary flex items-center justify-center" onclick="setLanguage('zh')" title="中文"><i class="fa-solid fa-language"></i></button>
+            </div>
+            <div class="contract-container">
+                <p data-en="Contract Address: 0xa524b11473b7ce7eb1dc883a585e64471a734444" data-zh="合约地址: 0xa524b11473b7ce7eb1dc883a585e64471a734444">Contract Address: 0xa524b11473b7ce7eb1dc883a585e64471a734444</p>
+                <button class="btn-primary ml-2 flex items-center justify-center" onclick="copyContractAddress()" title="Copy"><i class="fa-solid fa-copy"></i></button>
+            </div>
+        </div>
+        <section id="lore" class="min-h-screen flex items-center relative py-20 section-hidden section-visible">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="title-container">
+                            <div class="text-xs text-yellow-400 tracking-widest uppercase mb-1" data-en="Our Story" data-zh="我们的故事">Our Story</div>
+                            <div class="text-4xl md:text-5xl font-bold gradient-text" data-en="The Lore of JobIess" data-zh="JobIess 的传说">The Lore of JobIess</div>
+                        </div>
+                        <div class="w-20 h-1 bg-gradient-to-r from-yellow-500 to-black-500 mx-auto"></div>
+                    </div>
+                    <div class="card">
+                        <p class="text-lg text-gray-400 mb-4" data-en="It all began with a single tweet from CZ, the man who shaped the crypto world. A tweet that wasn’t meant to build an empire, yet it sparked something unexpected—a new kind of meme, a new kind of movement: JobIess." data-zh="这一切都始于塑造了加密世界的男人CZ的一条推文。这条推文并非旨在建立一个帝国，但它却意外地点燃了火花——一种新的迷因，一场新的运动：JobIess。">It all began with a single tweet from CZ, the man who shaped the crypto world. A tweet that wasn't meant to build an empire, yet it sparked something unexpected—a new kind of meme, a new kind of movement: JobIess.</p>
+                        <p class="text-lg text-gray-400 mb-4" data-en="In that moment, a word that usually carried sadness was flipped into hope and laughter. The community saw themselves in it—the grinders, the degens, the builders, all those who know the ups and downs of crypto life." data-zh="那一刻，一个通常带有悲伤意味的词语被转变为希望和欢笑。社区在其中看到了自己——那些埋头苦干的人、投机者、建设者，所有了解加密世界起起伏伏的人。">In that moment, a word that usually carried sadness was flipped into hope and laughter. The community saw themselves in it—the grinders, the degens, the builders, all those who know the ups and downs of crypto life.</p>
+                        <p class="text-lg text-gray-400 mb-4" data-en="From a playful spark, JobIess grew into a symbol of resilience. It’s the coin for the hustlers who lost it all and came back stronger, for the dreamers who refresh charts at 3am, for the ones who laugh at the chaos and still keep going." data-zh="从一个有趣的火花，JobIess成长为一个韧性的象征。它是为那些失去一切又强势回归的奋斗者而生，是为那些凌晨三点还在刷新图表的梦想家而生，是为那些嘲笑混乱却依然前行的人而生。">From a playful spark, JobIess grew into a symbol of resilience. It’s the coin for the hustlers who lost it all and came back stronger, for the dreamers who refresh charts at 3am, for the ones who laugh at the chaos and still keep going.</p>
+                        <p class="text-lg text-gray-400" data-en="JobIess is not just a meme. It’s the anthem of everyone who fell down and rose again. It’s proof that even from nothing, a single tweet can create a story, a culture, and a community." data-zh="JobIess不仅仅是一个迷因。它是所有跌倒后再次站起来的人的颂歌。它证明了即使一无所有，一条简单的推文也能创造一个故事、一种文化和一个社区。">JobIess is not just a meme. It’s the anthem of everyone who fell down and rose again. It’s proof that even from nothing, a single tweet can create a story, a culture, and a community.</p>
+                        <p class="text-lg text-gray-400" data-en="And now, the JobIess journey is just beginning" data-zh="而现在，JobIess 的旅程才刚刚开始">And now, the JobIess journey is just beginning</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about" class="min-h-screen flex items-center relative py-20 section-hidden section-visible">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="title-container">
+                            <div class="text-xs text-yellow-400 tracking-widest uppercase mb-1" data-en="About the Project" data-zh="关于项目">About the Project</div>
+                            <div class="text-4xl md:text-5xl font-bold gradient-text" data-en="About JobIess" data-zh="关于 JobIess">About JobIess</div>
+                        </div>
+                        <div class="w-20 h-1 bg-gradient-to-r from-yellow-500 to-black-500 mx-auto"></div>
+                    </div>
+                    <div class="flex flex-col gap-8">
+                        <div class="card">
+                            <p class="text-lg text-gray-400 mb-4" data-en="JobIess is a meme coin and social experiment inspired by the spirit of taking initiative. Built on BNB Smart Chain, it leverages fast, low-cost, and energy-efficient transactions, making it ideal for a dynamic and scalable meme coin community." data-zh="JobIess 是一个受主动精神启发的迷因币和社会实验。它建立在BNB智能链上，利用其快速、低成本和节能的交易特性，使其成为一个充满活力和可扩展的迷因币社区的理想选择。">JobIess is a meme coin and social experiment inspired by the spirit of taking initiative. Built on BNB Smart Chain, it leverages fast, low-cost, and energy-efficient transactions, making it ideal for a dynamic and scalable meme coin community.</p>
+                            <p class="text-lg text-gray-400 mb-4" data-en="Our long-term goal is to create a self-sustaining ecosystem, driven by a passionate community. Launched fairly, JobIess ensures equitable distribution, with no pre-mine or VC dumps, fostering trust and inclusivity." data-zh="我们的长期目标是创建一个由热情社区驱动的、自给自足的生态系统。JobIess 以公平启动的方式发布，确保公平分配，没有预挖或风投抛售，从而培养信任和包容性。">Our long-term goal is to create a self-sustaining ecosystem, driven by a passionate community. Launched fairly, JobIess ensures equitable distribution, with no pre-mine or VC dumps, fostering trust and inclusivity.</p>
+                            <p class="text-lg text-gray-400" data-en="<strong>Project Details:</strong><br>Project Name: JobIess<br>Ticker: $JobIess<br>Network: BNB Smart Chain" data-zh="<strong>项目详情：</strong><br>项目名称：JobIess<br>代号：$JobIess<br>网络：BNB 智能链"><strong>Project Details:</strong><br>Project Name: JobIess<br>Ticker: $JobIess<br>Network: BNB Smart Chain</p>
+                        </div>
+                        <div id="dexscreener-embed"><iframe src="https://dexscreener.com/bsc/0x1f6b2a35f1ca3ab808ef0c50f055ce5e24ea9801?embed=1&loadChartSettings=0&trades=0&info=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"></iframe></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="roadmap" class="min-h-screen flex items-center relative py-20 section-hidden section-visible">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="title-container">
+                            <div class="text-xs text-yellow-400 tracking-widest uppercase mb-1" data-en="Our Plan" data-zh="我们的计划">Our Plan</div>
+                            <div class="text-4xl md:text-5xl font-bold gradient-text" data-en="JobIess Roadmap" data-zh="JobIess 路线图">JobIess Roadmap</div>
+                        </div>
+                        <div class="w-20 h-1 bg-gradient-to-r from-yellow-500 to-black-500 mx-auto"></div>
+                    </div>
+                    <div class="card flex flex-col items-center">
+                        <h3 class="text-2xl font-bold gradient-text mb-4" data-en="Phase 1 – Born JobIess" data-zh="第一阶段 – Born JobIess">Phase 1 – Born JobIess</h3>
+                        <ul class="text-lg text-gray-400 list-disc pl-6 mb-4">
+                            <li data-en="A tweet from CZ sparks the legend" data-zh="CZ的一条推文点燃了传说">A tweet from CZ sparks the legend</li>
+                            <li data-en="Community laughs → community builds" data-zh="社区欢笑 → 社区建设">Community laughs → community builds</li>
+                            <li data-en="First memes take over Telegram & X" data-zh="第一批迷因席卷Telegram & X">First memes take over Telegram & X</li>
+                        </ul>
+                    </div>
+                    <div class="card flex flex-col items-center mt-8">
+                        <h3 class="text-2xl font-bold gradient-text mb-4" data-en="Phase 2 – Job Hunting" data-zh="第二阶段 – Job Hunting">Phase 2 – Job Hunting</h3>
+                        <ul class="text-lg text-gray-400 list-disc pl-6 mb-4">
+                            <li data-en="Memes spread faster than bull runs" data-zh="迷因的传播速度快于牛市">Memes spread faster than bull runs</li>
+                            <li data-en="First supporters join the cause" data-zh="第一批支持者加入阵营">First supporters join the cause</li>
+                            <li data-en="JobIess becomes the inside joke of crypto" data-zh="JobIess 成为加密圈内的梗">JobIess becomes the inside joke of crypto</li>
+                        </ul>
+                    </div>
+                    <div class="card flex flex-col items-center mt-8">
+                        <h3 class="text-2xl font-bold gradient-text mb-4" data-en="Phase 3 – Promotion Without a Job" data-zh="第三阶段 – Promotion Without a Job">Phase 3 – Promotion Without a Job</h3>
+                        <ul class="text-lg text-gray-400 list-disc pl-6 mb-4">
+                            <li data-en="Trending on X and crypto spaces" data-zh="在X和加密领域成为热点">Trending on X and crypto spaces</li>
+                            <li data-en="Partnerships with other meme communities" data-zh="与其他迷因社区建立合作关系">Partnerships with other meme communities</li>
+                            <li data-en="JobIess logo starts popping up everywhere" data-zh="JobIess的标志开始随处可见">JobIess logo starts popping up everywhere</li>
+                        </ul>
+                    </div>
+                    <div class="card flex flex-col items-center mt-8">
+                        <h3 class="text-2xl font-bold gradient-text mb-4" data-en="Phase 4 – CEO of Being JobIess" data-zh="第四阶段 – CEO of Being JobIess">Phase 4 – CEO of Being JobIess</h3>
+                        <ul class="text-lg text-gray-400 list-disc pl-6 mb-4">
+                            <li data-en="Full community takeover" data-zh="完全由社区接管">Full community takeover</li>
+                            <li data-en="JobIess becomes a cultural symbol" data-zh="JobIess 成为一种文化象征">JobIess becomes a cultural symbol</li>
+                            <li data-en="From “no job” to “the job” of the meme market" data-zh="从“无业”到迷因市场的“头号玩家”">From “no job” to “the job” of the meme market</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="gallery" class="min-h-screen flex items-center relative py-20 section-hidden section-visible">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="title-container">
+                            <div class="text-xs text-yellow-400 tracking-widest uppercase mb-1" data-en="Our Gallery" data-zh="我们的图库">Our Gallery</div>
+                            <div class="text-4xl md:text-5xl font-bold gradient-text" data-en="Explore Our Gallery" data-zh="浏览我们的图库">Explore Our Gallery</div>
+                        </div>
+                        <div class="w-20 h-1 bg-gradient-to-r from-yellow-500 to-black-500 mx-auto"></div>
+                    </div>
+                    <div class="imageGallery">
+                        <button><img src="1.jpg" alt="JobIess Image 1"></button>
+                        <button><img src="2.jpg" alt="JobIess Image 2"></button>
+                        <button><img src="3.jpg" alt="JobIess Image 3"></button>
+                        <button><img src="4.jpg" alt="JobIess Image 4"></button>
+                        <button><img src="5.jpg" alt="JobIess Image 5"></button>
+                        <button><img src="6.jpg" alt="JobIess Image 6"></button>
+                        <button><img src="17.jpg" alt="JobIess Image 7"></button>
+                        <button><img src="20.jpg" alt="JobIess Image 8"></button>
+                        <button><img src="9.jpg" alt="JobIess Image 9"></button>
+                        <button><img src="10.jpg" alt="JobIess Image 10"></button>
+                        <button><img src="11.jpg" alt="JobIess Image 11"></button>
+                        <button><img src="12.jpg" alt="JobIess Image 12"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <dialog id="gallery-dialog" class="dialog">
+            <div class="dialog-container">
+                <button class="close-btn" id="close-dialog-btn"><i class="ri-close-line"></i></button>
+                <img id="dialog-image" src="" alt="Full-size gallery image">
+            </div>
+        </dialog>
+        <section id="tokenomics" class="min-h-screen flex items-center relative py-20 section-hidden section-visible">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="title-container">
+                            <div class="text-xs text-yellow-400 tracking-widest uppercase mb-1" data-en="Token Details" data-zh="代币详情">Token Details</div>
+                            <div class="text-4xl md:text-5xl font-bold gradient-text" data-en="Tokenomics of $JobIess" data-zh="$JobIess 代币经济学">Tokenomics of $JobIess</div>
+                        </div>
+                        <div class="w-20 h-1 bg-gradient-to-r from-yellow-500 to-black-500 mx-auto"></div>
+                    </div>
+                    <div class="card">
+                        <p class="text-lg text-gray-400 mb-4" data-en="Total Supply: 1,000,000,000 $JobIess" data-zh="总供应量：1,000,000,000 $JobIess">Total Supply: 1,000,000,000 $JobIess</p>
+                        <p class="text-lg text-gray-400 mb-4" data-en="JobIess Was born on 4Meme" data-zh="JobIess Was born on 4Meme">JobIess Was born on 4Meme</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="faq" class="min-h-screen flex items-center relative py-20 section-hidden section-visible">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="title-container">
+                            <div class="text-xs text-yellow-400 tracking-widest uppercase mb-1" data-en="Frequently Asked Questions" data-zh="常见问题">Frequently Asked Questions</div>
+                            <div class="text-4xl md:text-5xl font-bold gradient-text" data-en="FAQ" data-zh="常见问题">FAQ</div>
+                        </div>
+                        <div class="w-20 h-1 bg-gradient-to-r from-yellow-500 to-black-500 mx-auto"></div>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-2xl font-bold gradient-text mb-4" data-en="What is $JobIess?" data-zh="$JobIess 是什么？">What is $JobIess?</h3>
+                        <p class="text-lg text-gray-400 mb-4" data-en="A meme coin on BNB Smart Chain focused on taking initiative." data-zh="一个专注于主动精神的、在BNB智能链上的迷因币。">A meme coin on BNB Smart Chain focused on taking initiative.</p>
+                        <h3 class="text-2xl font-bold gradient-text mb-4" data-en="How to buy?" data-zh="如何购买？">How to buy?</h3>
+                        <p class="text-lg text-gray-400 mb-4" data-en="Use DEX on BNB Smart Chain network." data-zh="在BNB智能链网络上使用去中心化交易所（DEX）即可购买。">Use DEX on BNB Smart Chain network.</p>
+                        <h3 class="text-2xl font-bold gradient-text mb-4" data-en="Looking for a job?" data-zh="找工作?">Looking for a job?</h3>
+                        <p class="text-lg text-gray-400 mb-4"><a href="https://www.binance.com/en/careers" target="_blank" class="hover:text-white underline">https://www.binance.com/en/careers</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="admin-warning" class="min-h-screen flex items-center relative py-20 section-hidden section-visible">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="title-container">
+                            <div class="text-xs text-yellow-400 tracking-widest uppercase mb-1" data-en="Warning" data-zh="警告">Warning</div>
+                            <div class="text-4xl md:text-5xl font-bold gradient-text" data-en="Beware of Impersonators" data-zh="谨防冒充者">Beware of Impersonators</div>
+                        </div>
+                        <div class="w-20 h-1 bg-gradient-to-r from-yellow-500 to-black-500 mx-auto"></div>
+                    </div>
+                    <div class="card">
+                        <p class="text-lg text-red-400 mb-4 font-bold" data-en="Official Project Administrators will NEVER DM you first. Anyone who DMs you and asks for your wallet information, private key, or to send them funds is a SCAMMER. Stay vigilant and only interact with official channels." data-zh="项目官方管理员绝不会私聊您。任何私聊您并索要您的钱包信息、私钥或要求您向其转账的人都是诈骗犯。请保持警惕，并仅与官方渠道互动。">Official Project Administrators will NEVER DM you first. Anyone who DMs you and asks for your wallet information, private key, or to send them funds is a SCAMMER. Stay vigilant and only interact with official channels.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div class="running-gallery">
+        <div class="gallery-track">
+            <img src="logo.jpg" alt="Gallery Image 0">
+            <img src="1.jpg" alt="Gallery Image 1">
+            <img src="2.jpg" alt="Gallery Image 2">
+            <img src="3.jpg" alt="Gallery Image 3">
+            <img src="4.jpg" alt="Gallery Image 4">
+            <img src="5.jpg" alt="Gallery Image 5">
+            <img src="6.jpg" alt="Gallery Image 6">
+            <img src="17.jpg" alt="Gallery Image 7">
+            <img src="20.jpg" alt="Gallery Image 8">
+            <img src="9.jpg" alt="Gallery Image 9">
+            <img src="10.jpg" alt="Gallery Image 10">
+            <img src="11.jpg" alt="Gallery Image 11">
+            <img src="12.jpg" alt="Gallery Image 12">
+            <img src="13.jpg" alt="Gallery Image 13">
+            <img src="14.jpg" alt="Gallery Image 14">
+            <img src="15.jpg" alt="Gallery Image 15">
+            <img src="16.jpg" alt="Gallery Image 0">
+            <img src="17.jpg" alt="Gallery Image 1">
+            <img src="18.jpg" alt="Gallery Image 2">
+            <img src="19.jpg" alt="Gallery Image 3">
+            <img src="20.jpg" alt="Gallery Image 4">
+            <img src="1.jpg" alt="Gallery Image 5">
+            <img src="2.jpg" alt="Gallery Image 6">
+            <img src="3.jpg" alt="Gallery Image 7">
+            <img src="4.jpg" alt="Gallery Image 9">
+            <img src="5.jpg" alt="Gallery Image 10">
+            <img src="6.jpg" alt="Gallery Image 11">
+            <img src="17.jpg" alt="Gallery Image 12">
+            <img src="20.jpg" alt="Gallery Image 13">
+            <img src="9.jpg" alt="Gallery Image 14">
+            <img src="10.jpg" alt="Gallery Image 15">
+        </div>
+    </div>
+    <footer class="bg-gray-900/80 backdrop-blur-lg border-t border-gray-800">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-4 md:mb-0">
+                    <img src="logo.jpg" alt="JobIess Logo" class="h-12 w-auto">
+                    <p class="text-gray-400 mt-2" data-en="&copy; 2025 JobIess. All rights reserved." data-zh="&copy; 2025 JobIess. 保留所有权利。">&copy; 2025 JobIess. All rights reserved.</p>
+                </div>
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
+                    <div>
+                        <h5 class="text-lg font-bold gradient-text" data-en="Links" data-zh="链接">Links</h5>
+                        <ul class="mt-2 text-gray-400">
+                            <li><a href="#home" class="hover:text-white" data-en="Home" data-zh="主页">Home</a></li>
+                            <li><a href="#about" class="hover:text-white" data-en="About" data-zh="关于">About</a></li>
+                            <li><a href="#roadmap" class="hover:text-white" data-en="Roadmap" data-zh="路线图">Roadmap</a></li>
+                            <li><a href="#tokenomics" class="hover:text-white" data-en="Tokenomics" data-zh="代币经济学">Tokenomics</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="text-lg font-bold gradient-text" data-en="Community" data-zh="社区">Community</h5>
+                        <ul class="mt-2 text-gray-400">
+                            <li><a href="https://t.me/joblesss2" class="hover:text-white" data-en="Telegram" data-zh="电报">Telegram</a></li>
+                            <li><a href="https://x.com/jobiess_bsc_?s=21&t=x2bmBSoMGpLSbkOgUriIgQ" class="hover:text-white" data-en="Twitter" data-zh="推特">Twitter</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/zdog@1/dist/zdog.dist.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zfont@latest/dist/zfont.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.4/dist/web3.min.js"></script>
+    <script>
+        // Language Switcher Logic
+        const translations = {
+            en: {
+                "title": "JobIess - $JobIess",
+                "warn-popup-text": "Caught you trying to snoop around our code, huh? JobIess doesn't play nice with backstage lurkers—stay in the audience!",
+                "connect-popup-text": "Whoa there speedy You need to connect your wallet before you can play with the big toys Go on click that connect button We will wait.",
+                "running-text": "CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444 - Join JobIess ($JobIess) - The Meme Coin for Initiative on BNB Smart Chain!",
+                "contract-running-text": "CA $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444",
+                "nav-home": "Home",
+                "nav-lore": "Lore",
+                "nav-about": "About",
+                "nav-roadmap": "Roadmap",
+                "nav-gallery": "Gallery",
+                "nav-tokenomics": "Tokenomics",
+                "nav-faq": "FAQ",
+                "nav-admin-warning": "Warning",
+                "welcome-title": "WELCOME TO JobIess - $JobIess",
+                "hero-slogan": "JobIess, but taking the initiative. - CTO",
+                "hero-desc": "JobIess is a meme coin born from the spirit of initiative on BNB Smart Chain. With a fair launch, we are building a strong community for decentralized financial innovation. Join us and experience true initiative!",
+                "btn-bscscan": "Bsc Scan",
+                "btn-coingecko": "Coingecko",
+                "btn-twitter": "Twitter",
+                "btn-dextools": "Dextools",
+                "btn-dexscreener": "Dexscreener",
+                "btn-aveai": "Ave AI",
+                "btn-4meme": "4Meme",
+                "lore-title-small": "Our Story",
+                "lore-title-main": "The Lore of JobIess",
+                "lore-p1": "It all began with a single tweet from CZ, the man who shaped the crypto world. A tweet that wasn’t meant to build an empire, yet it sparked something unexpected—a new kind of meme, a new kind of movement: JobIess.",
+                "lore-p2": "In that moment, a word that usually carried sadness was flipped into hope and laughter. The community saw themselves in it—the grinders, the degens, the builders, all those who know the ups and downs of crypto life.",
+                "lore-p3": "From a playful spark, JobIess grew into a symbol of resilience. It’s the coin for the hustlers who lost it all and came back stronger, for the dreamers who refresh charts at 3am, for the ones who laugh at the chaos and still keep going.",
+                "lore-p4": "JobIess is not just a meme. It’s the anthem of everyone who fell down and rose again. It’s proof that even from nothing, a single tweet can create a story, a culture, and a community.",
+                "lore-p5": "And now, the JobIess journey is just beginning",
+                "about-title-small": "About the Project",
+                "about-title-main": "About JobIess",
+                "about-p1": "JobIess is a meme coin and social experiment inspired by the spirit of taking initiative. Built on BNB Smart Chain, it leverages fast, low-cost, and energy-efficient transactions, making it ideal for a dynamic and scalable meme coin community.",
+                "about-p2": "Our long-term goal is to create a self-sustaining ecosystem, driven by a passionate community. Launched fairly, JobIess ensures equitable distribution, with no pre-mine or VC dumps, fostering trust and inclusivity.",
+                "project-details": "<strong>Project Details:</strong><br>Project Name: JobIess<br>Ticker: $JobIess<br>Network: BNB Smart Chain",
+                "roadmap-title-small": "Our Plan",
+                "roadmap-title-main": "JobIess Roadmap",
+                "roadmap-intro-title": "Introduction",
+                "roadmap-intro-p": "JobIess is a memecoin that provides holders with the opportunity to take initiative in the DeFi ecosystem on BNB Smart Chain.",
+                "phase1-title": "Phase 1 – Born JobIess",
+                "phase1-li1": "A tweet from CZ sparks the legend",
+                "phase1-li2": "Community laughs → community builds",
+                "phase1-li3": "First memes take over Telegram & X",
+                "phase2-title": "Phase 2 – Job Hunting",
+                "phase2-li1": "Memes spread faster than bull runs",
+                "phase2-li2": "First supporters join the cause",
+                "phase2-li3": "JobIess becomes the inside joke of crypto",
+                "phase3-title": "Phase 3 – Promotion Without a Job",
+                "phase3-li1": "Trending on X and crypto spaces",
+                "phase3-li2": "Partnerships with other meme communities",
+                "phase3-li3": "JobIess logo starts popping up everywhere",
+                "phase4-title": "Phase 4 – CEO of Being JobIess",
+                "phase4-li1": "Full community takeover",
+                "phase4-li2": "JobIess becomes a cultural symbol",
+                "phase4-li3": "From “no job” to “the job” of the meme market",
+                "gallery-title-small": "Our Gallery",
+                "gallery-title-main": "Explore Our Gallery",
+                "tokenomics-title-small": "Token Details",
+                "tokenomics-title-main": "Tokenomics of $JobIess",
+                "tokenomics-p1": "Total Supply: 1,000,000,000 $JobIess",
+                "tokenomics-p2": "JobIess Was born on 4Meme",
+                "faq-title-small": "Frequently Asked Questions",
+                "faq-title-main": "FAQ",
+                "faq-q1": "What is $JobIess?",
+                "faq-a1": "A meme coin on BNB Smart Chain focused on taking initiative.",
+                "faq-q2": "How to buy?",
+                "faq-a2": "Use DEX on BNB Smart Chain network.",
+                "faq-q3": "Looking for a job?",
+                "admin-warning-title-small": "Warning",
+                "admin-warning-title-main": "Beware of Impersonators",
+                "admin-warning-text": "Official Project Administrators will NEVER DM you first. Anyone who DMs you and asks for your wallet information, private key, or to send them funds is a SCAMMER. Stay vigilant and only interact with official channels.",
+                "footer-copyright": "&copy; 2025 JobIess. All rights reserved.",
+                "footer-links-title": "Links",
+                "footer-community-title": "Community",
+                "footer-telegram": "Telegram",
+                "footer-twitter": "Twitter",
+                "lang-eng": "ENG",
+                "lang-ch": "中文",
+            },
+            zh: {
+                "title": "JobIess - $JobIess",
+                "warn-popup-text": "抓到你偷看我们的代码了？JobIess不欢迎后台窥探者——请待在观众席！",
+                "connect-popup-text": "哇，慢点！你需要先连接你的钱包才能玩大玩具。来吧，点击那个连接按钮，我们会等你的。",
+                "running-text": "合约地址 $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444 - 加入 JobIess ($JobIess) - BNB 智能链上的主动精神迷因币！",
+                "contract-running-text": "合约地址 $JobIess : 0xa524b11473b7ce7eb1dc883a585e64471a734444",
+                "nav-home": "主页",
+                "nav-lore": "传说",
+                "nav-about": "关于",
+                "nav-roadmap": "路线图",
+                "nav-gallery": "图库",
+                "nav-tokenomics": "代币经济学",
+                "nav-faq": "常见问题",
+                "nav-admin-warning": "警告",
+                "welcome-title": "欢迎来到 JobIess - $JobIess",
+                "hero-slogan": "失业，但仍保有主动精神。 - CTO",
+                "hero-desc": "JobIess 是一个诞生于BNB智能链上主动精神的迷因币。通过公平启动，我们正在为去中心化金融创新建立一个强大的社区。加入我们，体验真正的主动精神！",
+                "btn-bscscan": "Bsc Scan",
+                "btn-coingecko": "Coingecko",
+                "btn-twitter": "推特",
+                "btn-dextools": "Dextools",
+                "btn-dexscreener": "Dexscreener",
+                "btn-aveai": "Ave AI",
+                "btn-4meme": "4Meme",
+                "lore-title-small": "我们的故事",
+                "lore-title-main": "JobIess 的传说",
+                "lore-p1": "这一切都始于塑造了加密世界的男人CZ的一条推文。这条推文并非旨在建立一个帝国，但它却意外地点燃了火花——一种新的迷因，一场新的运动：JobIess。",
+                "lore-p2": "那一刻，一个通常带有悲伤意味的词语被转变为希望和欢笑。社区在其中看到了自己——那些埋头苦干的人、投机者、建设者，所有了解加密世界起起伏伏的人。",
+                "lore-p3": "从一个有趣的火花，JobIess成长为一个韧性的象征。它是为那些失去一切又强势回归的奋斗者而生，是为那些凌晨三点还在刷新图表的梦想家而生，是为那些嘲笑混乱却依然前行的人而生。",
+                "lore-p4": "JobIess不仅仅是一个迷因。它是所有跌倒后再次站起来的人的颂歌。它证明了即使一无所有，一条简单的推文也能创造一个故事、一种文化和一个社区。",
+                "lore-p5": "而现在，JobIess 的旅程才刚刚开始",
+                "about-title-small": "关于项目",
+                "about-title-main": "关于 JobIess",
+                "about-p1": "JobIess 是一个受主动精神启发的迷因币和社会实验。它建立在BNB智能链上，利用其快速、低成本和节能的交易特性，使其成为一个充满活力和可扩展的迷因币社区的理想选择。",
+                "about-p2": "我们的长期目标是创建一个由热情社区驱动的、自给自足的生态系统。JobIess 以公平启动的方式发布，确保公平分配，没有预挖或风投抛售，从而培养信任和包容性。",
+                "project-details": "<strong>项目详情：</strong><br>项目名称：JobIess<br>代号：$JobIess<br>网络：BNB 智能链",
+                "roadmap-title-small": "我们的计划",
+                "roadmap-title-main": "JobIess 路线图",
+                "roadmap-intro-title": "简介",
+                "roadmap-intro-p": "JobIess 是一个迷因币，为持有者提供了在BNB智能链DeFi生态系统中采取主动精神的机会。",
+                "phase1-title": "第一阶段 – Born JobIess",
+                "phase1-li1": "CZ的一条推文点燃了传说",
+                "phase1-li2": "社区欢笑 → 社区建设",
+                "phase1-li3": "第一批迷因席卷Telegram & X",
+                "phase2-title": "第二阶段 – Job Hunting",
+                "phase2-li1": "迷因的传播速度快于牛市",
+                "phase2-li2": "第一批支持者加入阵营",
+                "phase2-li3": "JobIess 成为加密圈内的梗",
+                "phase3-title": "第三阶段 – Promotion Without a Job",
+                "phase3-li1": "在X和加密领域成为热点",
+                "phase3-li2": "与其他迷因社区建立合作关系",
+                "phase3-li3": "JobIess的标志开始随处可见",
+                "phase4-title": "第四阶段 – CEO of Being JobIess",
+                "phase4-li1": "完全由社区接管",
+                "phase4-li2": "JobIess 成为一种文化象征",
+                "phase4-li3": "从“无业”到迷因市场的“头号玩家”",
+                "gallery-title-small": "我们的图库",
+                "gallery-title-main": "浏览我们的图库",
+                "tokenomics-title-small": "代币详情",
+                "tokenomics-title-main": "$JobIess 代币经济学",
+                "tokenomics-p1": "总供应量：1,000,000,000 $JobIess",
+                "tokenomics-p2": "JobIess Was born on 4Meme",
+                "faq-title-small": "常见问题",
+                "faq-title-main": "常见问题",
+                "faq-q1": "$JobIess 是什么？",
+                "faq-a1": "一个专注于主动精神的、在BNB智能链上的迷因币。",
+                "faq-q2": "如何购买？",
+                "faq-a2": "在BNB智能链网络上使用去中心化交易所（DEX）即可购买。",
+                "faq-q3": "Looking for a job?",
+                "admin-warning-title-small": "Warning",
+                "admin-warning-title-main": "Beware of Impersonators",
+                "admin-warning-text": "项目官方管理员绝不会私聊您。任何私聊您并索要您的钱包信息、私钥或要求您向其转账的人都是诈骗犯。请保持警惕，并仅与官方渠道互动。",
+                "footer-copyright": "&copy; 2025 JobIess. 保留所有权利。",
+                "footer-links-title": "链接",
+                "footer-community-title": "社区",
+                "footer-telegram": "电报",
+                "footer-twitter": "推特",
+                "lang-eng": "ENG",
+                "lang-ch": "中文",
+            }
+        };
+       
+        function setLanguage(lang) {
+            const elements = document.querySelectorAll('[data-en], [data-zh]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-' + lang);
+                if (key) {
+                    element.innerHTML = key;
+                }
+            });
+            // Set the page title
+            const titleElement = document.querySelector('title');
+            if (titleElement) {
+                const titleText = translations[lang].title;
+                if (titleText) {
+                    titleElement.innerText = titleText;
+                }
+            }
+        }
+       
+        document.addEventListener('DOMContentLoaded', () => {
+            setLanguage('en'); // Set default language on page load
+        });
+       
+        // Function to copy contract address to clipboard
+        function copyContractAddress() {
+            const contractAddress = '0xa524b11473b7ce7eb1dc883a585e64471a734444';
+            navigator.clipboard.writeText(contractAddress).then(() => {
+                showToast("Contract address copied to clipboard!");
+            }).catch(err => {
+                console.error('Failed to copy contract address: ', err);
+            });
+        }
+
+        // Function to show toast notification
+        function showToast(message) {
+            const notifBar = document.getElementById('wallet-connect-notif-bar');
+            const toast = document.createElement('div');
+            toast.classList.add('toast-notif');
+            toast.textContent = message;
+            notifBar.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 4000); // Match animation duration
+        }
+       
+        // Zdog Binance Logo background script
+        function radiansToDegrees(_val) {
+            return _val * (Math.PI / 180);
+        }
+       
+        let sceneSize = 400;
+       
+        const yellow = "#FFD700"; // Gold Yellow from your theme
+        const darkyellow = "#DAA520"; // Darker Gold from your theme
+        const black = "#11191F";
+       
+        Zfont.init(Zdog);
+       
+        let binancefont = new Zdog.Font({
+            src: "https://coder787.github.io/files/Mulish-ExtraBold.ttf"
+        });
+       
+        const illo = new Zdog.Illustration({
+            element: ".binance-logo-bg",
+            dragRotate: false, // Disable drag-to-rotate
+            resize: "fullscreen",
+            onResize: function (width, height) {
+                let minSize = Math.min(width, height);
+                this.zoom = minSize / sceneSize;
+            },
+            rotate: { x: radiansToDegrees(-10), y: radiansToDegrees(25) }
+        });
+       
+        let anchor = new Zdog.Anchor({
+            addTo: illo,
+            translate: { y: -50 },
+            rotate: { y: radiansToDegrees(180) }
+        });
+       
+        let rect1 = new Zdog.Box({
+            addTo: anchor,
+            width: 80,
+            height: 45,
+            depth: 45,
+            color: yellow,
+            fill: true,
+            stroke: 1,
+            translate: { x: -44, y: -65, z: 0 },
+            rotate: { z: radiansToDegrees(-45) },
+            bottomFace: darkyellow,
+            leftFace: darkyellow,
+            topFace: darkyellow,
+            rightFace: false
+        });
+       
+        let rect2 = rect1.copy({
+            width: 80,
+            translate: { y: -65, x: 44 },
+            rotate: { z: radiansToDegrees(45) },
+            color: yellow,
+            leftFace: false,
+            rightFace: darkyellow
+        });
+       
+        let sq1 = rect1.copy({
+            width: 45,
+            height: 45,
+            translate: { y: 0, x: 110 },
+            bottomFace: darkyellow,
+            leftFace: darkyellow,
+            topFace: darkyellow,
+            rightFace: darkyellow
+        });
+       
+        let sq2 = sq1.copy({
+            translate: { y: 0, x: 0 },
+            rotate: { z: radiansToDegrees(-45) }
+        });
+       
+        let sq3 = sq1.copy({
+            translate: { y: 0, x: -110 },
+            rotate: { z: radiansToDegrees(-45) }
+        });
+       
+        let rect3 = rect1.copy({
+            translate: { y: 65, x: 44 },
+            leftFace: false,
+            rightFace: darkyellow
+        });
+       
+        let rect4 = rect2.copy({
+            translate: { y: 65, x: -44 },
+            leftFace: darkyellow,
+            rightFace: false
+        });
+       
+        let sq4 = rect1.copy({
+            translate: { x: 0, y: -109, z: 0 },
+            width: 45,
+            bottomFace: false,
+            leftFace: false,
+            topFace: darkyellow,
+            rightFace: darkyellow
+        });
+       
+        let sq5 = sq4.copy({
+            translate: { x: 0, y: 109, z: 0 },
+            bottomFace: darkyellow,
+            leftFace: darkyellow,
+            topFace: false,
+            rightFace: false
+        });
+       
+        let binancetext = new Zdog.Text({
+            addTo: anchor,
+            font: binancefont,
+            value: "J o b I e s s 4 M E M E",
+            fontSize: 45,
+            textAlign: "center",
+            textBaseline: "middle",
+            color: yellow,
+            fill: true,
+            stroke: 4,
+            translate: { y: 160 },
+            rotate: { y: radiansToDegrees(180) }
+        });
+       
+        let shadow1 = binancetext.copy({
+            addTo: anchor,
+            translate: { y: 160, z: 3 },
+            color: darkyellow
+        });
+       
+        let shadow2 = binancetext.copy({
+            addTo: anchor,
+            translate: { y: 160, z: 6 },
+            color: darkyellow
+        });
+       
+        let shadow3 = binancetext.copy({
+            addTo: anchor,
+            translate: { y: 160, z: 9 },
+            color: darkyellow
+        });
+       
+        let shadow4 = binancetext.copy({
+            addTo: anchor,
+            translate: { y: 160, z: 12 },
+            color: darkyellow
+        });
+       
+        function animate() {
+            // Increase rotation speed
+            illo.rotate.y += 0.005;
+            illo.updateRenderGraph();
+            requestAnimationFrame(animate);
+        }
+       
+        animate();
+       
+        // Existing script functions
+        const sections = document.querySelectorAll('section');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+       
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('section-visible');
+                }
+            });
+        }, observerOptions);
+       
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+       
+        const mobileMenuBtn = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+       
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+            mobileMenuBtn.classList.toggle('active');
+        }
+       
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+       
+        // Popup Functions with Wallet Check
+        function showWarningPopup() { document.getElementById('warning-popup').style.display = 'block'; }
+       
+        // Close popups when clicking outside
+        document.body.addEventListener('click', function(e) {
+            const popups = document.querySelectorAll('#warning-popup, #connect-wallet-popup');
+            let isClickInsidePopup = false;
+            popups.forEach(popup => {
+                if(e.target === popup || popup.contains(e.target)) {
+                    isClickInsidePopup = true;
+                }
+            });
+            if (!isClickInsidePopup) {
+                popups.forEach(popup => {
+                    if (popup.style.display === 'block') {
+                        popup.style.display = 'none';
+                    }
+                });
+            }
+        });
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+       
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.shiftKey && e.key === 'J')) {
+                e.preventDefault();
+                showWarningPopup();
+            }
+        });
+       
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showWarningPopup();
+        });
+       
+        // Gallery Fullscreen Logic
+        const galleryDialog = document.getElementById('gallery-dialog');
+        const galleryButtons = document.querySelectorAll('.imageGallery button');
+        const dialogImage = document.getElementById('dialog-image');
+        const closeDialogBtn = document.getElementById('close-dialog-btn');
+       
+        galleryButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const imageSrc = button.querySelector('img').src;
+                dialogImage.src = imageSrc;
+                galleryDialog.showModal();
+            });
+        });
+       
+        closeDialogBtn.addEventListener('click', () => {
+            galleryDialog.close();
+        });
+       
+        galleryDialog.addEventListener('click', (e) => {
+            if(e.target === galleryDialog) {
+                galleryDialog.close();
+            }
+        });
+       
+        // About Section Image Slideshow
+        const aboutImage = document.getElementById('project-image');
+        if (aboutImage) {
+            const aboutImageSources = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "17.jpg", "20.jpg", "9.jpg", "10.jpg", "11.jpg", "12.jpg"];
+            let currentAboutImageIndex = 0;
+            setInterval(() => {
+                currentAboutImageIndex = (currentAboutImageIndex + 1) % aboutImageSources.length;
+                aboutImage.src = aboutImageSources[currentAboutImageIndex];
+            }, 3000); // Change image every 3 seconds
+        }
+    </script>
+</body>
+</html>
